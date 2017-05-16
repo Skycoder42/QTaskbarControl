@@ -16,12 +16,12 @@ QTaskbarControl::~QTaskbarControl() = default;
 
 bool QTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
 {
-	return true;
+	return _d->setAttribute(key, data);
 }
 
 QVariant QTaskbarControl::attribute(QTaskbarControl::SetupKey key) const
 {
-	return QVariant();
+	return _d->attribute(key);
 }
 
 bool QTaskbarControl::progressVisible() const

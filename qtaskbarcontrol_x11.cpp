@@ -35,7 +35,7 @@ QVariant QX11TaskbarControl::attribute(QTaskbarControl::SetupKey key)
 {
 	switch (key) {
 	case QTaskbarControl::LinuxDesktopFile:
-		return QVariant();
+		return _desktopFile;
 	default:
 		return QVariant();
 	}

@@ -1,5 +1,11 @@
 #include "widget.h"
 #include "ui_widget.h"
+#ifdef Q_OS_LINUX
+#include <QUuid>
+#include <QDir>
+#include <QFile>
+#include <QStandardPaths>
+#endif
 
 Widget::Widget(QWidget *parent) :
 	QWidget(parent),
@@ -16,14 +22,32 @@ Widget::Widget(QWidget *parent) :
 			taskbar, &QTaskbarControl::setCounter);
 
 #ifdef Q_OS_LINUX
-	//TODO create desktop file
+	auto name = QUuid::createUuid().toString() + QStringLiteral(".desktop");
+	QDir appDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
+	QFile desktopFile(appDir.absoluteFilePath(name));
+	if(!desktopFile.exists()) {
+		desktopFile.open(QIODevice::WriteOnly);
+		desktopFile.write("[Desktop Entry]\n");
+		desktopFile.write("Type=Application\n");
+		desktopFile.write("Version=1.1\n");
+		desktopFile.write("Name=" + QApplication::applicationDisplayName().toUtf8() + "\n");
+		desktopFile.write("Exec=" + QApplication::applicationFilePath().toUtf8() + "\n");
+		desktopFile.close();
+	}
+	taskbar->setAttribute(QTaskbarControl::LinuxDesktopFile, name);
+	ui->desktopFileLineEdit->setText(name);
+#else
+	ui->desktopFileLabel->setVisible(false);
+	ui->desktopFileLineEdit->setVisible(false);
 #endif
 }
 
 Widget::~Widget()
 {
 #ifdef Q_OS_LINUX
-	//TODO delete desktop file
+	auto name = taskbar->attribute(QTaskbarControl::LinuxDesktopFile).toString();
+	QDir appDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
+	QFile::remove(appDir.absoluteFilePath(name));
 #endif
 
 	delete ui;
