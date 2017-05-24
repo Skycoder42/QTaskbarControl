@@ -52,6 +52,8 @@ private:
 	double _progress;
 	bool _counterVisible;
 	int _counter;
+
+	bool eventFilter(QObject *watched, QEvent *event) override;
 };
 
 #endif // QTASKBARCONTROL_H

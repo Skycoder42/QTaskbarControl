@@ -1,15 +1,20 @@
 #include "qtaskbarcontrol.h"
 #include "qtaskbarcontrol_p.h"
 
+#include <QEvent>
+
 QTaskbarControl::QTaskbarControl(QWidget *parent) :
 	QObject(parent),
-	_d(QTaskbarControlPrivate::createPrivate()),
+	_d(QTaskbarControlPrivate::createPrivate(this)),
 	_progressVisible(false),
 	_progress(0.0),
 	_counterVisible(false),
 	_counter(0)
 {
-	_d->setWindow(parent->windowHandle());
+	if(parent->windowHandle())
+		_d->setWindow(parent->windowHandle());
+	else
+		parent->installEventFilter(this);
 }
 
 QTaskbarControl::~QTaskbarControl() = default;
@@ -82,4 +87,18 @@ void QTaskbarControl::setCounter(int counter)
 	_counter = counter;
 	_d->setCounter(counter);
 	emit counterChanged(counter);
+}
+
+bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)
+{
+	if(watched == parent()) {
+		if(event->type() == QEvent::Show) {
+			auto wid = qobject_cast<QWidget*>(parent());
+			if(wid)
+				_d->setWindow(wid->windowHandle());
+			parent()->removeEventFilter(this);
+		}
+	}
+
+	return false;
 }

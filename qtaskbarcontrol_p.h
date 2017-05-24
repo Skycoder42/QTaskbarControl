@@ -6,7 +6,7 @@
 class QTaskbarControlPrivate
 {
 public:
-	static QTaskbarControlPrivate *createPrivate();
+	static QTaskbarControlPrivate *createPrivate(QTaskbarControl *q_ptr);
 
 	virtual ~QTaskbarControlPrivate() = default;
 

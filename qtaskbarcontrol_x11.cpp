@@ -3,7 +3,7 @@
 #include <QDBusConnection>
 #include <QDebug>
 
-QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate()
+QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 {
 	return new QX11TaskbarControl();
 }
