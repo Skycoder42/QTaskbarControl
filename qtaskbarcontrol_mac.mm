@@ -2,12 +2,12 @@
 #include <QtMacExtras>
 #include <QLocale>
 
-#import <AppKit/NSDockTile.h>
 #import <AppKit/NSApplication.h>
 #import <AppKit/NSImageView.h>
+#import <AppKit/NSDockTile.h>
+#import <AppKit/NSColor.h>
 #import <AppKit/NSCIImageRep.h>
 #import <AppKit/NSBezierPath.h>
-#import <AppKit/NSColor.h>
 
 @interface TaskProgressView : NSView {
 	double _progress;
@@ -39,25 +39,28 @@ static TaskProgressView *taskProgress = nil;
 - (void)drawRect:(NSRect)rect
 {
 	Q_UNUSED(rect)
-	NSRect boundary = [self bounds];
-	[[NSApp applicationIconImage] drawInRect:boundary
+	NSRect bounds = [self bounds];
+	[[NSApp applicationIconImage] drawInRect:bounds
 								  fromRect:NSZeroRect
 								  operation:NSCompositeCopy
 								  fraction:1.0];
-	NSRect progressBoundary = boundary;
-	progressBoundary.size.height *= 0.13;
-	progressBoundary.size.width *= 0.8;
-	progressBoundary.origin.x = (NSWidth(boundary) - NSWidth(progressBoundary))/2.;
-	progressBoundary.origin.y = NSHeight(boundary)*0.13;
+	NSRect progressRect = bounds;
+	progressRect.size.width *= 0.8;
+	progressRect.size.height *= 0.125;
+	progressRect.origin.x = (NSWidth(bounds) - NSWidth(progressRect)) / 2.0;
+	progressRect.origin.y = NSHeight(bounds) * 0.25;
 
-	NSRect currentProgress = progressBoundary;
-	currentProgress.size.width *= _progress;
-	[[NSColor blackColor] setFill];
-	[NSBezierPath fillRect:progressBoundary];
+	NSRect currentRect = progressRect;
+	currentRect.size.width *= _progress;
+
+	[[NSColor darkGrayColor] setFill];
+	[NSBezierPath fillRect:progressRect];
+
 	[[NSColor lightGrayColor] setFill];
-	[NSBezierPath fillRect:currentProgress];
-	[[NSColor blackColor] setStroke];
-	[NSBezierPath strokeRect:progressBoundary];
+	[NSBezierPath fillRect:currentRect];
+
+	[[NSColor darkGrayColor] setStroke];
+	[NSBezierPath strokeRect:progressRect];
 }
 
 @end
