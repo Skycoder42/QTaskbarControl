@@ -75,23 +75,26 @@ QMacTaskbarControl::~QMacTaskbarControl()
 
 void QMacTaskbarControl::setWindow(QWindow *window)
 {
-	Q_UNUSED(window);
+	Q_UNUSED(window)
 }
 
 bool QMacTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
 {
+	Q_UNUSED(key)
+	Q_UNUSED(data)
 	return false;
 }
 
 QVariant QMacTaskbarControl::attribute(QTaskbarControl::SetupKey key)
 {
+	Q_UNUSED(key)
 	return QVariant();
 }
 
 void QMacTaskbarControl::setProgress(bool progressVisible, double progress)
 {
 	[_taskView setProgress:progress];
-	if (progressVisible)
+	if (progressVisible && progress >= 0.0)
 		[[NSApp dockTile] setContentView:_taskView];
 	else
 		[[NSApp dockTile] setContentView:nil];
