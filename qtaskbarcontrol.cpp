@@ -55,7 +55,7 @@ void QTaskbarControl::setProgressVisible(bool progressVisible)
 		return;
 
 	_progressVisible = progressVisible;
-	_d->setProgressVisible(progressVisible);
+	_d->setProgress(progressVisible, _progress);
 	emit progressVisibleChanged(progressVisible);
 }
 
@@ -65,7 +65,7 @@ void QTaskbarControl::setProgress(double progress)
 		return;
 
 	_progress = progress;
-	_d->setProgress(progress);
+	_d->setProgress(_progressVisible, progress);
 	emit progressChanged(progress);
 }
 
@@ -75,7 +75,7 @@ void QTaskbarControl::setCounterVisible(bool counterVisible)
 		return;
 
 	_counterVisible = counterVisible;
-	_d->setCounterVisible(counterVisible);
+	_d->setCounter(counterVisible, _counter);
 	emit counterVisibleChanged(counterVisible);
 }
 
@@ -85,7 +85,7 @@ void QTaskbarControl::setCounter(int counter)
 		return;
 
 	_counter = counter;
-	_d->setCounter(counter);
+	_d->setCounter(_counterVisible, counter);
 	emit counterChanged(counter);
 }
 

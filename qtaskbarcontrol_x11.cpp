@@ -41,30 +41,19 @@ QVariant QX11TaskbarControl::attribute(QTaskbarControl::SetupKey key)
 	}
 }
 
-void QX11TaskbarControl::setProgressVisible(bool progressVisible)
-{
-	sendMessage(QStringLiteral("progress-visible"), progressVisible);
-}
-
-void QX11TaskbarControl::setProgress(double progress)
-{
-	sendMessage(QStringLiteral("progress"), progress);
-}
-
-void QX11TaskbarControl::setCounterVisible(bool counterVisible)
-{
-	sendMessage(QStringLiteral("count-visible"), counterVisible);
-}
-
-void QX11TaskbarControl::setCounter(int counter)
-{
-	sendMessage(QStringLiteral("count"), counter);
-}
-
-void QX11TaskbarControl::sendMessage(QString key, QVariant value)
+void QX11TaskbarControl::setProgress(bool progressVisible, double progress)
 {
 	QVariantMap properties;
-	properties.insert(key, value);
+	properties.insert(QStringLiteral("progress-visible"), progressVisible);
+	properties.insert(QStringLiteral("progress"), progress);
+	sendMessage(properties);
+}
+
+void QX11TaskbarControl::setCounter(bool counterVisible, int counter)
+{
+	QVariantMap properties;
+	properties.insert(QStringLiteral("count-visible"), counterVisible);
+	properties.insert(QStringLiteral("count"), counter);
 	sendMessage(properties);
 }
 

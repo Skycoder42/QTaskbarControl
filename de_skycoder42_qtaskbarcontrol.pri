@@ -14,6 +14,10 @@ linux {
 	HEADERS += $$PWD/qtaskbarcontrol_win.h
 	SOURCES += $$PWD/qtaskbarcontrol_win.cpp
 	RESOURCES += $$PWD/qtaskbarcontrol.qrc #https://www.iconfinder.com/icons/10282/circle_red_icon#size=48
+} else:mac {
+	QT += macextras
+	HEADERS += $$PWD/qtaskbarcontrol_mac.h
+	OBJECTIVE_SOURCES += $$PWD/qtaskbarcontrol_mac.mm
 }
 
 INCLUDEPATH += $$PWD

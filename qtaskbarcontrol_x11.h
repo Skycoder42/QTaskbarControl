@@ -13,10 +13,8 @@ public:
 	void setWindow(QWindow *window) override;
 	bool setAttribute(QTaskbarControl::SetupKey key, const QVariant &data) override;
 	QVariant attribute(QTaskbarControl::SetupKey key) override;
-	void setProgressVisible(bool progressVisible) override;
-	void setProgress(double progress) override;
-	void setCounterVisible(bool counterVisible) override;
-	void setCounter(int counter) override;
+	void setProgress(bool progressVisible, double progress) override;
+	void setCounter(bool counterVisible, int counter) override;
 
 private:
 	QString _desktopFile;
