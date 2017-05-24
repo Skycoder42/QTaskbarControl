@@ -9,31 +9,11 @@
 #import <AppKit/NSCIImageRep.h>
 #import <AppKit/NSBezierPath.h>
 
-@interface TaskProgressView : NSView {
-	double _progress;
-}
-
-+ (TaskProgressView *)taskProgress;
-
-- (void)setProgress:(double)progress;
-
-@end
-
-static TaskProgressView *taskProgress = nil;
-
 @implementation TaskProgressView
-
-+ (TaskProgressView *)taskProgress
-{
-	if (taskProgress == nil)
-		taskProgress = [[TaskProgressView alloc] init];
-	return taskProgress;
-}
 
 - (void)setProgress:(double)progress
 {
 	_progress = progress;
-	[[NSApp dockTile] display];
 }
 
 - (void)drawRect:(NSRect)rect
@@ -46,20 +26,23 @@ static TaskProgressView *taskProgress = nil;
 								  fraction:1.0];
 	NSRect progressRect = bounds;
 	progressRect.size.width *= 0.8;
-	progressRect.size.height *= 0.125;
+	progressRect.size.height *= 0.042;
 	progressRect.origin.x = (NSWidth(bounds) - NSWidth(progressRect)) / 2.0;
-	progressRect.origin.y = NSHeight(bounds) * 0.25;
+	progressRect.origin.y = 0;
 
 	NSRect currentRect = progressRect;
 	currentRect.size.width *= _progress;
 
-	[[NSColor darkGrayColor] setFill];
+	auto d1 = 0xce / 256.0f;
+	auto d2 = 0x4f / 256.0f;
+
+	[[NSColor colorWithRed:d1 green:d1 blue:d1 alpha:1.0f] setFill];
 	[NSBezierPath fillRect:progressRect];
 
-	[[NSColor lightGrayColor] setFill];
+	[[NSColor colorWithRed:d2 green:d2 blue:d2 alpha:1.0f] setFill];
 	[NSBezierPath fillRect:currentRect];
 
-	[[NSColor darkGrayColor] setStroke];
+	[[NSColor colorWithRed:d2 green:d2 blue:d2 alpha:1.0f] setStroke];
 	[NSBezierPath strokeRect:progressRect];
 }
 
@@ -70,9 +53,13 @@ QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 	return new QMacTaskbarControl();
 }
 
-QMacTaskbarControl::QMacTaskbarControl()
-{
+QMacTaskbarControl::QMacTaskbarControl() :
+	_taskView([[TaskProgressView alloc] init])
+{}
 
+QMacTaskbarControl::~QMacTaskbarControl()
+{
+	[_taskView release];
 }
 
 void QMacTaskbarControl::setWindow(QWindow *window)
@@ -92,9 +79,9 @@ QVariant QMacTaskbarControl::attribute(QTaskbarControl::SetupKey key)
 
 void QMacTaskbarControl::setProgress(bool progressVisible, double progress)
 {
-	[[TaskProgressView taskProgress] setProgress:progress];
+	[_taskView setProgress:progress];
 	if (progressVisible)
-		[[NSApp dockTile] setContentView:[TaskProgressView taskProgress]];
+		[[NSApp dockTile] setContentView:_taskView];
 	else
 		[[NSApp dockTile] setContentView:nil];
 	[[NSApp dockTile] display];
