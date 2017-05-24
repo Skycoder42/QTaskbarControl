@@ -18,7 +18,16 @@ public:
 	void setCounter(int counter) override;
 
 private:
+	QTaskbarControl *_q_ptr;
 	QWinTaskbarButton *_button;
+	QIcon _badgeIcon;
+	QColor _badgeColor;
+
+	bool _counterVisible;
+	QIcon _currentBadge;
+	int _currentCounter;
+
+	void updateBadge();
 };
 
 #endif // QTASKBARCONTROL_WIN_H

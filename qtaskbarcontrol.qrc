@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/de/skycoder42/qtaskbarcontrol/icons">
+        <file alias="badge.png">1495653702_circle_red.png</file>
+    </qresource>
+</RCC>

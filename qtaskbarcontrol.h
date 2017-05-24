@@ -16,10 +16,19 @@ class QTaskbarControl : public QObject
 	Q_PROPERTY(int counter READ counter WRITE setCounter NOTIFY counterChanged)
 
 public:
+	enum WinProgressState {
+		Running,
+		Paused,
+		Stopped
+	};
+	Q_ENUM(WinProgressState)
+
 	enum SetupKey {
 		LinuxDesktopFile,
+
+		WindowsProgressState,
 		WindowsBadgeIcon,
-		WindowsProgressState
+		WindowsBadgeTextColor
 	};
 	Q_ENUM(SetupKey)
 

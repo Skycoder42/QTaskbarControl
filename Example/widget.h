@@ -18,6 +18,11 @@ public:
 
 private slots:
 	void on_progressSlider_valueChanged(int value);
+	void on_progressStateComboBox_currentIndexChanged(int index);
+	void on_badgeIconPushButton_clicked();
+	void on_badgeTextColorPushButton_clicked();
+	
+	void on_indeterminatePushButton_clicked();
 
 private:
 	Ui::Widget *ui;

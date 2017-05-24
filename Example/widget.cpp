@@ -1,5 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
+#include <QFileDialog>
+#include <QColorDialog>
 #ifdef Q_OS_LINUX
 #include <QUuid>
 #include <QDir>
@@ -40,6 +42,16 @@ Widget::Widget(QWidget *parent) :
 	ui->desktopFileLabel->setVisible(false);
 	ui->desktopFileLineEdit->setVisible(false);
 #endif
+#ifndef Q_OS_WIN
+	ui->progressStateLabel->setVisible(false);
+	ui->progressStateComboBox->setVisible(false);
+	ui->badgeIconLabel->setVisible(false);
+	ui->badgeIconPushButton->setVisible(false);
+	ui->badgeTextColorLabel->setVisible(false);
+	ui->badgeTextColorPushButton->setVisible(false);
+	ui->indeterminateLabel->setVisible(false);
+	ui->indeterminatePushButton->setVisible(false);
+#endif
 }
 
 Widget::~Widget()
@@ -56,4 +68,33 @@ Widget::~Widget()
 void Widget::on_progressSlider_valueChanged(int value)
 {
 	taskbar->setProgress(value/(double)ui->progressSlider->maximum());
+}
+
+void Widget::on_progressStateComboBox_currentIndexChanged(int index)
+{
+	taskbar->setAttribute(QTaskbarControl::WindowsProgressState, (QTaskbarControl::WinProgressState)index);
+}
+
+void Widget::on_badgeIconPushButton_clicked()
+{
+	auto file = QFileDialog::getOpenFileName(this,
+											 tr("Select an icon"),
+											 QString(),
+											 tr("Icons (*.ico *.png *.bmp);;All Files (*)"));
+	if(!file.isNull())
+		taskbar->setAttribute(QTaskbarControl::WindowsBadgeIcon, QIcon(file));
+}
+
+void Widget::on_badgeTextColorPushButton_clicked()
+{
+	auto color = QColorDialog::getColor(taskbar->attribute(QTaskbarControl::WindowsBadgeTextColor).value<QColor>(),
+										this,
+										tr("Select a color"));
+	if(color.isValid())
+		taskbar->setAttribute(QTaskbarControl::WindowsBadgeTextColor, color);
+}
+
+void Widget::on_indeterminatePushButton_clicked()
+{
+	taskbar->setProgress(-1);
 }
