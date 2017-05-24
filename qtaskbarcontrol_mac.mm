@@ -19,6 +19,7 @@
 - (void)drawRect:(NSRect)rect
 {
 	Q_UNUSED(rect)
+
 	NSRect bounds = [self bounds];
 	[[NSApp applicationIconImage] drawInRect:bounds
 								  fromRect:NSZeroRect
@@ -28,22 +29,32 @@
 	progressRect.size.width *= 0.8;
 	progressRect.size.height *= 0.042;
 	progressRect.origin.x = (NSWidth(bounds) - NSWidth(progressRect)) / 2.0;
-	progressRect.origin.y = 0;
+	progressRect.origin.y = 1;
+
+	auto radius = progressRect.size.height / 2.0;
 
 	NSRect currentRect = progressRect;
-	currentRect.size.width *= _progress;
+	currentRect.size.width = (currentRect.size.width - 2*radius) * _progress + 2*radius;
 
-	auto d1 = 0xce / 256.0f;
-	auto d2 = 0x4f / 256.0f;
+	auto cBase = 0xce / 256.0f;
+	NSColor *baseColor = [NSColor colorWithRed:cBase green:cBase blue:cBase alpha:1.0f];
+	auto cFill = 0x4f / 256.0f;
+	NSColor *fillColor = [NSColor colorWithRed:cFill green:cFill blue:cFill alpha:1.0f];
 
-	[[NSColor colorWithRed:d1 green:d1 blue:d1 alpha:1.0f] setFill];
-	[NSBezierPath fillRect:progressRect];
+	NSBezierPath *basePath = [NSBezierPath bezierPath];
+	[basePath appendBezierPathWithRoundedRect:progressRect xRadius:radius yRadius:radius];
+	[baseColor setFill];
+	[basePath fill];
 
-	[[NSColor colorWithRed:d2 green:d2 blue:d2 alpha:1.0f] setFill];
-	[NSBezierPath fillRect:currentRect];
+	NSBezierPath *progressPath = [NSBezierPath bezierPath];
+	[progressPath appendBezierPathWithRoundedRect:currentRect xRadius:radius yRadius:radius];
+	[fillColor setFill];
+	[progressPath fill];
 
-	[[NSColor colorWithRed:d2 green:d2 blue:d2 alpha:1.0f] setStroke];
-	[NSBezierPath strokeRect:progressRect];
+	NSBezierPath *framePath = [NSBezierPath bezierPath];
+	[framePath appendBezierPathWithRoundedRect:progressRect xRadius:radius yRadius:radius];
+	[fillColor setStroke];
+	[framePath stroke];
 }
 
 @end
