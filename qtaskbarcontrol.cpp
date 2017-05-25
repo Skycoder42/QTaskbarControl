@@ -11,6 +11,7 @@ QTaskbarControl::QTaskbarControl(QWidget *parent) :
 	_counterVisible(false),
 	_counter(0)
 {
+	Q_ASSERT_X(parent, Q_FUNC_INFO, "QTaskbarControl must have a valid parent");
 	if(parent->windowHandle())
 		_d->setWindow(parent->windowHandle());
 	else

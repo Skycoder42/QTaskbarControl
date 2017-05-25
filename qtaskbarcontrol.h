@@ -32,7 +32,7 @@ public:
 	};
 	Q_ENUM(SetupKey)
 
-	explicit QTaskbarControl(QWidget *parent = nullptr);
+	explicit QTaskbarControl(QWidget *parent);
 	~QTaskbarControl();
 
 	bool setAttribute(SetupKey key, const QVariant &data);
