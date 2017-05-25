@@ -23,7 +23,7 @@ The package is providet as qpm package, [`de.skycoder42.qtaskbarcontrol`](https:
 Check their [GitHub - Usage for App Developers](https://github.com/Cutehacks/qpm/blob/master/README.md#usage-for-app-developers) to learn more about qpm.
 
 ## Usage
-For most platforms, you simply need to create an instance of the class for a window, and your good to go. For linux however, you need to do additional setup. Read [Special setup for linux](#). The following example shows the part thats the same for all platforms:
+For most platforms, you simply need to create an instance of the class for a window, and your good to go. For linux however, you need to do additional setup. Read [Special setup for linux](#special-setup-for-linux). The following example shows the part thats the same for all platforms:
 
 ```cpp
 auto widget = new QWidget(); //your window
@@ -45,8 +45,8 @@ In order to work, the linux implementation needs an application with a valid des
 [Desktop Entry]
 Type=Application
 Version=1.1
-Name=MyApp
-Exec=<path_to>/MyApp
+Name=<MyApp>
+Exec=<path_to_MyApp>
 ```
 2. Copy that file to a location where desktop files are found by the OS (e.g. `~/.local/share/applications`, `/usr/local/share/applications`, `/usr/share/applications`)
 3. Register the desktop file in your application. In case the file is named `myapp.desktop`, add the following code after the construction of QTaskbarControl:
