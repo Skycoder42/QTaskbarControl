@@ -12,13 +12,8 @@ QWinTaskbarControl::QWinTaskbarControl(QTaskbarControl *q_ptr) :
 	_q_ptr(q_ptr),
 	_button(new QWinTaskbarButton(q_ptr)),
 	_badgeIcon(QIcon(QStringLiteral(":/de/skycoder42/qtaskbarcontrol/icons/badge.png"))),
-	_badgeColor(Qt::white),
-	_counterVisible(false),
-	_currentBadge(),
-	_currentCounter(0)
-{
-	updateBadge();
-}
+	_badgeColor(Qt::white)
+{}
 
 void QWinTaskbarControl::setWindow(QWindow *window)
 {
@@ -47,14 +42,14 @@ bool QWinTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVari
 		auto icon = data.value<QIcon>();
 		if(!icon.isNull()) {
 			_badgeIcon = icon;
-			updateBadge();
+			setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
 			return true;
 		} else
 			return false;
 	}
 	case QTaskbarControl::WindowsBadgeTextColor:
 		_badgeColor = data.value<QColor>();
-		updateBadge();
+		setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
 	default:
 		return false;
 	}
@@ -80,12 +75,7 @@ QVariant QWinTaskbarControl::attribute(QTaskbarControl::SetupKey key)
 	}
 }
 
-void QWinTaskbarControl::setProgressVisible(bool progressVisible)
-{
-	_button->progress()->setVisible(progressVisible);
-}
-
-void QWinTaskbarControl::setProgress(double progress)
+void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
 {
 	if(progress < 0)
 		_button->progress()->setRange(0, 0);
@@ -93,47 +83,31 @@ void QWinTaskbarControl::setProgress(double progress)
 		_button->progress()->setRange(0, 1000);
 		_button->progress()->setValue(progress * 1000);
 	}
+	_button->progress()->setVisible(progressVisible);
 }
 
-void QWinTaskbarControl::setCounterVisible(bool counterVisible)
+void QWinTaskbarControl::setCounter(bool counterVisible, int counter)
 {
 	if(counterVisible) {
-		_button->setOverlayIcon(_currentBadge);
-		_button->setOverlayAccessibleDescription(QLocale().toString(_currentCounter));
+		auto currentBadge = QIcon();
+		auto text = QLocale().toString(counter);
+
+		foreach(auto size, _badgeIcon.availableSizes()) {
+			auto pm = _badgeIcon.pixmap(size);
+			pm.setDevicePixelRatio(1);
+
+			QPainter painter(&pm);
+			auto font = painter.font();
+			font.setPixelSize(pm.height() * 0.6);
+			painter.setFont(font);
+			painter.setPen(_badgeColor);
+			painter.drawText(pm.rect(), Qt::AlignCenter, text);
+
+			currentBadge.addPixmap(pm);
+		}
+
+		_button->setOverlayIcon(currentBadge);
+		_button->setOverlayAccessibleDescription(text);
 	} else
 		_button->clearOverlayIcon();
-	_counterVisible = counterVisible;
-}
-
-void QWinTaskbarControl::setCounter(int counter)
-{
-	if(counter != _currentCounter) {
-		_currentCounter = counter;
-		updateBadge();
-	}
-}
-
-void QWinTaskbarControl::updateBadge()
-{
-	_currentBadge = QIcon();
-	auto text = QLocale().toString(_currentCounter);
-
-	foreach(auto size, _badgeIcon.availableSizes()) {
-		auto pm = _badgeIcon.pixmap(size);
-		pm.setDevicePixelRatio(1);
-
-		QPainter painter(&pm);
-		auto font = painter.font();
-		font.setPixelSize(pm.height() * 0.6);
-		painter.setFont(font);
-		painter.setPen(_badgeColor);
-		painter.drawText(pm.rect(), Qt::AlignCenter, text);
-
-		_currentBadge.addPixmap(pm);
-	}
-
-	if(_counterVisible) {
-		_button->setOverlayIcon(_currentBadge);
-		_button->setOverlayAccessibleDescription(text);
-	}
 }
