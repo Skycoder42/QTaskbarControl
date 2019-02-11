@@ -64,7 +64,7 @@ void QX11TaskbarControl::sendMessage(const QVariantMap &params)
 											  QStringLiteral("com.canonical.Unity.LauncherEntry"),
 											  QStringLiteral("Update"));
 
-	message << QStringLiteral("application://") + _desktopFile
+	message << QString{QStringLiteral("application://") + _desktopFile}
 			<< params;
 	QDBusConnection::sessionBus().send(message);
 }
