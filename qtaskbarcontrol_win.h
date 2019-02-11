@@ -20,8 +20,8 @@ public:
 private:
 	QTaskbarControl *_q_ptr;
 	QWinTaskbarButton *_button;
-	QIcon _badgeIcon;
-	QColor _badgeColor;
+	QIcon _badgeIcon {QStringLiteral(":/de/skycoder42/qtaskbarcontrol/icons/badge.png")};
+	QColor _badgeColor = Qt::white;
 };
 
 #endif // QTASKBARCONTROL_WIN_H

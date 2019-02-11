@@ -5,12 +5,8 @@
 
 QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 {
-	return new QX11TaskbarControl();
+	return new QX11TaskbarControl{};
 }
-
-QX11TaskbarControl::QX11TaskbarControl() :
-	_desktopFile()
-{}
 
 void QX11TaskbarControl::setWindow(QWindow *window)
 {
@@ -57,7 +53,7 @@ void QX11TaskbarControl::setCounter(bool counterVisible, int counter)
 	sendMessage(properties);
 }
 
-void QX11TaskbarControl::sendMessage(QVariantMap params)
+void QX11TaskbarControl::sendMessage(const QVariantMap &params)
 {
 	if(_desktopFile.isEmpty()) {
 		qWarning() << "You need to set the" << QTaskbarControl::LinuxDesktopFile << "attribute before you can use QTaskbarControl!";
@@ -81,5 +77,4 @@ void QX11TaskbarControl::sendReset()
 	properties.insert(QStringLiteral("count-visible"), false);
 	properties.insert(QStringLiteral("count"), 0);
 	sendMessage(properties);
-
 }

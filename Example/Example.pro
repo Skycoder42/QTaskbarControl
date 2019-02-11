@@ -1,23 +1,17 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2017-05-16T17:24:14
-#
-#-------------------------------------------------
-
-QT       += core gui
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = Example
 TEMPLATE = app
 
-include(../de_skycoder42_qtaskbarcontrol.pri)
+QT += core gui widgets
 
-DEFINES += QT_DEPRECATED_WARNING
+TARGET = Example
 
-SOURCES += main.cpp\
-		widget.cpp
+include(../qtaskbarcontrol.pri)
 
-HEADERS  += widget.h
+HEADERS += \
+	widget.h
 
-FORMS    += widget.ui
+SOURCES += \
+	main.cpp \
+	widget.cpp
+
+FORMS += \
+	widget.ui

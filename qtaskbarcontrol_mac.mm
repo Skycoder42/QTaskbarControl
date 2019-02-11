@@ -61,11 +61,11 @@
 
 QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 {
-	return new QMacTaskbarControl();
+	return new QMacTaskbarControl{};
 }
 
 QMacTaskbarControl::QMacTaskbarControl() :
-	_taskView([[TaskProgressView alloc] init])
+	_taskView{[[TaskProgressView alloc] init]}
 {}
 
 QMacTaskbarControl::~QMacTaskbarControl()
@@ -107,5 +107,4 @@ void QMacTaskbarControl::setCounter(bool counterVisible, int counter)
 		QtMac::setBadgeLabelText(QLocale().toString(counter));
 	else
 		QtMac::setBadgeLabelText(QString());
-
 }

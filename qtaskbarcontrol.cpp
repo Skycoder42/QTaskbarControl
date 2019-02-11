@@ -4,89 +4,84 @@
 #include <QEvent>
 
 QTaskbarControl::QTaskbarControl(QWidget *parent) :
-	QObject(parent),
-	_d(QTaskbarControlPrivate::createPrivate(this)),
-	_progressVisible(false),
-	_progress(0.0),
-	_counterVisible(false),
-	_counter(0)
+	QObject{parent},
+	d{QTaskbarControlPrivate::createPrivate(this)}
 {
 	Q_ASSERT_X(parent, Q_FUNC_INFO, "QTaskbarControl must have a valid parent");
+	parent->installEventFilter(this);
 	if(parent->windowHandle())
-		_d->setWindow(parent->windowHandle());
-	else
-		parent->installEventFilter(this);
+		d->setWindow(parent->windowHandle());
 }
 
 QTaskbarControl::~QTaskbarControl() = default;
 
 bool QTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
 {
-	return _d->setAttribute(key, data);
+	return d->setAttribute(key, data);
 }
 
 QVariant QTaskbarControl::attribute(QTaskbarControl::SetupKey key) const
 {
-	return _d->attribute(key);
+	return d->attribute(key);
 }
 
 bool QTaskbarControl::progressVisible() const
 {
-	return _progressVisible;
+	return d->progressVisible;
 }
 
 double QTaskbarControl::progress() const
 {
-	return _progress;
+	return d->progress;
 }
 
 bool QTaskbarControl::counterVisible() const
 {
-	return _counterVisible;
+	return d->counterVisible;
 }
 
 int QTaskbarControl::counter() const
 {
-	return _counter;
+	return d->counter;
 }
 
 void QTaskbarControl::setProgressVisible(bool progressVisible)
 {
-	if (_progressVisible == progressVisible)
+	if (d->progressVisible == progressVisible)
 		return;
 
-	_progressVisible = progressVisible;
-	_d->setProgress(progressVisible, _progress);
+	d->progressVisible = progressVisible;
+	d->setProgress(progressVisible, d->progress);
 	emit progressVisibleChanged(progressVisible);
 }
 
 void QTaskbarControl::setProgress(double progress)
 {
-	if (_progress == progress)
+	if (qFuzzyCompare(d->progress, progress))
 		return;
 
-	_progress = progress;
-	_d->setProgress(_progressVisible, progress);
+	d->progress = progress;
+	d->setProgress(d->progressVisible, progress);
 	emit progressChanged(progress);
 }
 
 void QTaskbarControl::setCounterVisible(bool counterVisible)
 {
-	if (_counterVisible == counterVisible)
+	if (d->counterVisible == counterVisible)
 		return;
 
-	_counterVisible = counterVisible;
-	_d->setCounter(counterVisible, _counter);
+	d->counterVisible = counterVisible;
+	d->setCounter(counterVisible, d->counter);
 	emit counterVisibleChanged(counterVisible);
 }
 
 void QTaskbarControl::setCounter(int counter)
 {
-	if (_counter == counter)
+	if (d->counter == counter)
 		return;
 
-	_counter = counter;
-	_d->setCounter(_counterVisible, counter);
+	d->counter = counter;
+	d->setCounter(d->counterVisible, counter);
 	emit counterChanged(counter);
 }
 
@@ -96,8 +91,7 @@ bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)
 		if(event->type() == QEvent::Show) {
 			auto wid = qobject_cast<QWidget*>(parent());
 			if(wid)
-				_d->setWindow(wid->windowHandle());
-			parent()->removeEventFilter(this);
+				d->setWindow(wid->windowHandle());
 		}
 	}
 

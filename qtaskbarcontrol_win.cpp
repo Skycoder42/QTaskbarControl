@@ -5,18 +5,19 @@
 
 QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *q_ptr)
 {
-	return new QWinTaskbarControl(q_ptr);
+	return new QWinTaskbarControl{q_ptr};
 }
 
 QWinTaskbarControl::QWinTaskbarControl(QTaskbarControl *q_ptr) :
-	_q_ptr(q_ptr),
-	_button(new QWinTaskbarButton(q_ptr)),
-	_badgeIcon(QIcon(QStringLiteral(":/de/skycoder42/qtaskbarcontrol/icons/badge.png"))),
-	_badgeColor(Qt::white)
+	_q_ptr{q_ptr},
+	_button{new QWinTaskbarButton{q_ptr}}
 {}
 
 void QWinTaskbarControl::setWindow(QWindow *window)
 {
+	if(_button->window() == window)
+		return;
+
 	_button->setWindow(window);
 }
 
@@ -89,14 +90,14 @@ void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
 void QWinTaskbarControl::setCounter(bool counterVisible, int counter)
 {
 	if(counterVisible) {
-		auto currentBadge = QIcon();
-		auto text = QLocale().toString(counter);
+		QIcon currentBadge;
+		auto text = QLocale{}.toString(counter);
 
 		foreach(auto size, _badgeIcon.availableSizes()) {
 			auto pm = _badgeIcon.pixmap(size);
 			pm.setDevicePixelRatio(1);
 
-			QPainter painter(&pm);
+			QPainter painter{&pm};
 			auto font = painter.font();
 			font.setPixelSize(pm.height() * 0.6);
 			painter.setFont(font);

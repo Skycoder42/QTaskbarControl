@@ -6,7 +6,7 @@
 #include <QScopedPointer>
 
 class QTaskbarControlPrivate;
-class QTaskbarControl : public QObject
+class Q_TASKBAR_CONTROL_EXPORT QTaskbarControl : public QObject
 {
 	Q_OBJECT
 
@@ -33,7 +33,7 @@ public:
 	Q_ENUM(SetupKey)
 
 	explicit QTaskbarControl(QWidget *parent);
-	~QTaskbarControl();
+	~QTaskbarControl() override;
 
 	bool setAttribute(SetupKey key, const QVariant &data);
 	QVariant attribute(SetupKey key) const;
@@ -56,11 +56,7 @@ signals:
 	void counterChanged(int counter);
 
 private:
-	QScopedPointer<QTaskbarControlPrivate> _d;
-	bool _progressVisible;
-	double _progress;
-	bool _counterVisible;
-	int _counter;
+	QScopedPointer<QTaskbarControlPrivate> d;
 
 	bool eventFilter(QObject *watched, QEvent *event) override;
 };

@@ -7,8 +7,6 @@
 class QX11TaskbarControl : public QTaskbarControlPrivate
 {
 public:
-	QX11TaskbarControl();
-
 	// QTaskbarControlPrivate interface
 	void setWindow(QWindow *window) override;
 	bool setAttribute(QTaskbarControl::SetupKey key, const QVariant &data) override;
@@ -19,8 +17,7 @@ public:
 private:
 	QString _desktopFile;
 
-	void sendMessage(QString key, QVariant value);
-	void sendMessage(QVariantMap params);
+	void sendMessage(const QVariantMap &params);
 	void sendReset();
 };
 
