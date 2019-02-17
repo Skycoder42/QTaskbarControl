@@ -51,6 +51,7 @@ bool QWinTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVari
 	case QTaskbarControl::WindowsBadgeTextColor:
 		_badgeColor = data.value<QColor>();
 		setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
+		return true;
 	default:
 		return false;
 	}
