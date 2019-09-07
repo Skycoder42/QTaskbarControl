@@ -16,7 +16,7 @@ linux:!android:!emscripten {
 	HEADERS += $$PWD/qtaskbarcontrol_win.h
 	SOURCES += $$PWD/qtaskbarcontrol_win.cpp
 	RESOURCES += $$PWD/qtaskbarcontrol.qrc
-} else:osx {
+} else:mac:!ios {
 	QT += macextras
 	LIBS += -framework AppKit
 
