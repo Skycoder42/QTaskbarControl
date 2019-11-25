@@ -7,7 +7,7 @@ QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 
 void QDummyTaskbarControl::setWindow(QWindow *window)
 {
-	Q_UNUSED(window);
+	Q_UNUSED(window)
 }
 
 bool QDummyTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)

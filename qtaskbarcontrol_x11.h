@@ -15,10 +15,7 @@ public:
 	void setCounter(bool counterVisible, int counter) override;
 
 private:
-	QString _desktopFile;
-
 	void sendMessage(const QVariantMap &params);
-	void sendReset();
 };
 
 #endif // QTASKBARCONTROL_X11_H

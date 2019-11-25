@@ -25,6 +25,7 @@ Widget::Widget(QWidget *parent) :
 
 #ifdef Q_OS_LINUX
 	auto name = QUuid::createUuid().toString() + QStringLiteral(".desktop");
+	QGuiApplication::setDesktopFileName(name);
 	QDir appDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
 	QFile desktopFile(appDir.absoluteFilePath(name));
 	if(!desktopFile.exists()) {
@@ -36,7 +37,6 @@ Widget::Widget(QWidget *parent) :
 		desktopFile.write("Exec=" + QApplication::applicationFilePath().toUtf8() + "\n");
 		desktopFile.close();
 	}
-	taskbar->setAttribute(QTaskbarControl::LinuxDesktopFile, name);
 	ui->desktopFileLineEdit->setText(name);
 #else
 	ui->desktopFileLabel->setVisible(false);
@@ -57,7 +57,7 @@ Widget::Widget(QWidget *parent) :
 Widget::~Widget()
 {
 #ifdef Q_OS_LINUX
-	auto name = taskbar->attribute(QTaskbarControl::LinuxDesktopFile).toString();
+	auto name = QGuiApplication::desktopFileName();
 	QDir appDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
 	QFile::remove(appDir.absoluteFilePath(name));
 #endif

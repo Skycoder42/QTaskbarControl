@@ -24,8 +24,6 @@ public:
 	Q_ENUM(WinProgressState)
 
 	enum SetupKey {
-		LinuxDesktopFile,
-
 		WindowsProgressState,
 		WindowsBadgeIcon,
 		WindowsBadgeTextColor
