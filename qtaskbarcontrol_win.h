@@ -12,8 +12,12 @@ public:
 	QWinTaskbarControl(QTaskbarControl *q_ptr);
 
 	void setWindow(QWindow *window) override;
-	bool setAttribute(QTaskbarControl::SetupKey key, const QVariant &data) override;
-	QVariant attribute(QTaskbarControl::SetupKey key) override;
+	void setWindowsProgressState(QTaskbarControl::WinProgressState state) override;
+	QTaskbarControl::WinProgressState windowsProgressState() const override;
+	void setWindowsBadgeIcon(const QIcon &icon) override;
+	QIcon windowsBadgeIcon() const override;
+	void setWindowsBadgeTextColor(const QColor &color) override;
+	QColor windowsBadgeTextColor() const override;
 	void setProgress(bool progressVisible, double progress) override;
 	void setCounter(bool counterVisible, int counter) override;
 

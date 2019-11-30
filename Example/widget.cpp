@@ -72,7 +72,7 @@ void Widget::on_progressSlider_valueChanged(int value)
 
 void Widget::on_progressStateComboBox_currentIndexChanged(int index)
 {
-	taskbar->setAttribute(QTaskbarControl::WindowsProgressState, (QTaskbarControl::WinProgressState)index);
+	taskbar->setWindowsProgressState((QTaskbarControl::WinProgressState)index);
 }
 
 void Widget::on_badgeIconPushButton_clicked()
@@ -82,16 +82,16 @@ void Widget::on_badgeIconPushButton_clicked()
 											 QString(),
 											 tr("Icons (*.ico *.png *.bmp);;All Files (*)"));
 	if(!file.isNull())
-		taskbar->setAttribute(QTaskbarControl::WindowsBadgeIcon, QIcon(file));
+		taskbar->setWindowsBadgeIcon(QIcon(file));
 }
 
 void Widget::on_badgeTextColorPushButton_clicked()
 {
-	auto color = QColorDialog::getColor(taskbar->attribute(QTaskbarControl::WindowsBadgeTextColor).value<QColor>(),
+	auto color = QColorDialog::getColor(taskbar->windowsBadgeTextColor(),
 										this,
 										tr("Select a color"));
 	if(color.isValid())
-		taskbar->setAttribute(QTaskbarControl::WindowsBadgeTextColor, color);
+		taskbar->setWindowsBadgeTextColor(color);
 }
 
 void Widget::on_indeterminatePushButton_clicked()

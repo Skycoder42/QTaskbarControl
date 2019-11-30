@@ -19,9 +19,6 @@ public:
 	QMacTaskbarControl();
 	~QMacTaskbarControl();
 
-	void setWindow(QWindow *window) override;
-	bool setAttribute(QTaskbarControl::SetupKey key, const QVariant &data) override;
-	QVariant attribute(QTaskbarControl::SetupKey key) override;
 	void setProgress(bool progressVisible, double progress) override;
 	void setCounter(bool counterVisible, int counter) override;
 

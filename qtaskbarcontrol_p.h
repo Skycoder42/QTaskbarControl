@@ -3,6 +3,8 @@
 
 #include "qtaskbarcontrol.h"
 
+class QWindow;
+
 class QTaskbarControlPrivate
 {
 	Q_DISABLE_COPY(QTaskbarControlPrivate)
@@ -14,9 +16,13 @@ public:
 	QTaskbarControlPrivate() = default;
 	virtual ~QTaskbarControlPrivate() = default;
 
-	virtual void setWindow(QWindow *window) = 0;
-	virtual bool setAttribute(QTaskbarControl::SetupKey key, const QVariant &data) = 0;
-	virtual QVariant attribute(QTaskbarControl::SetupKey key) = 0;
+	virtual void setWindow(QWindow *window);
+	virtual void setWindowsProgressState(QTaskbarControl::WinProgressState state);
+	virtual QTaskbarControl::WinProgressState windowsProgressState() const;
+	virtual void setWindowsBadgeIcon(const QIcon &icon);
+	virtual QIcon windowsBadgeIcon() const;
+	virtual void setWindowsBadgeTextColor(const QColor &color);
+	virtual QColor windowsBadgeTextColor() const;
 	virtual void setProgress(bool progressVisible, double progress) = 0;
 	virtual void setCounter(bool counterVisible, int counter) = 0;
 

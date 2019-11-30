@@ -9,24 +9,6 @@ QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 	return new QX11TaskbarControl{};
 }
 
-void QX11TaskbarControl::setWindow(QWindow *window)
-{
-	Q_UNUSED(window)
-}
-
-bool QX11TaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
-{
-	Q_UNUSED(key)
-	Q_UNUSED(data)
-	return false;
-}
-
-QVariant QX11TaskbarControl::attribute(QTaskbarControl::SetupKey key)
-{
-	Q_UNUSED(key)
-	return QVariant();
-}
-
 void QX11TaskbarControl::setProgress(bool progressVisible, double progress)
 {
 	QVariantMap properties;

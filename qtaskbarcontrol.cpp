@@ -2,6 +2,8 @@
 #include "qtaskbarcontrol_p.h"
 
 #include <QEvent>
+#include <QWidget>
+#include <QIcon>
 
 QTaskbarControl::QTaskbarControl(QWidget *parent) :
 	QObject{parent},
@@ -15,14 +17,19 @@ QTaskbarControl::QTaskbarControl(QWidget *parent) :
 
 QTaskbarControl::~QTaskbarControl() = default;
 
-bool QTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
+QTaskbarControl::WinProgressState QTaskbarControl::windowsProgressState() const
 {
-	return d->setAttribute(key, data);
+	return d->windowsProgressState();
 }
 
-QVariant QTaskbarControl::attribute(QTaskbarControl::SetupKey key) const
+QIcon QTaskbarControl::windowsBadgeIcon() const
 {
-	return d->attribute(key);
+	return d->windowsBadgeIcon();
+}
+
+QColor QTaskbarControl::windowsBadgeTextColor() const
+{
+	return d->windowsBadgeTextColor();
 }
 
 bool QTaskbarControl::progressVisible() const
@@ -43,6 +50,21 @@ bool QTaskbarControl::counterVisible() const
 int QTaskbarControl::counter() const
 {
 	return d->counter;
+}
+
+void QTaskbarControl::setWindowsProgressState(QTaskbarControl::WinProgressState state)
+{
+	d->setWindowsProgressState(state);
+}
+
+void QTaskbarControl::setWindowsBadgeIcon(const QIcon &icon)
+{
+	d->setWindowsBadgeIcon(icon);
+}
+
+void QTaskbarControl::setWindowsBadgeTextColor(const QColor &color)
+{
+	d->setWindowsBadgeTextColor(color);
 }
 
 void QTaskbarControl::setProgressVisible(bool progressVisible)
