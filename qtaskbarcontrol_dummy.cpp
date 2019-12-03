@@ -1,8 +1,8 @@
 #include "qtaskbarcontrol_dummy.h"
 
-QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
+QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate()
 {
-	return new QDummyTaskbarControl{};
+	return new QDummyTaskbarControl;
 }
 
 void QDummyTaskbarControl::setProgress(bool progressVisible, double progress)

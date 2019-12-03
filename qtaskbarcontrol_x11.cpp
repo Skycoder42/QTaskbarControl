@@ -4,9 +4,9 @@
 #include <QDebug>
 #include <QGuiApplication>
 
-QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
+QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate()
 {
-	return new QX11TaskbarControl{};
+	return new QX11TaskbarControl;
 }
 
 void QX11TaskbarControl::setProgress(bool progressVisible, double progress)

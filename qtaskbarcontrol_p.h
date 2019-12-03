@@ -11,7 +11,7 @@ class QTaskbarControlPrivate
 	friend class QTaskbarControl;
 
 public:
-	static QTaskbarControlPrivate *createPrivate(QTaskbarControl *q_ptr);
+	static QTaskbarControlPrivate *createPrivate();
 
 	QTaskbarControlPrivate() = default;
 	virtual ~QTaskbarControlPrivate() = default;
@@ -26,11 +26,11 @@ public:
 	virtual void setProgress(bool progressVisible, double progress) = 0;
 	virtual void setCounter(bool counterVisible, int counter) = 0;
 
-private:
-	bool progressVisible;
-	double progress;
-	bool counterVisible;
-	int counter;
+protected:
+	bool _progressVisible;
+	double _progress;
+	bool _counterVisible;
+	int _counter;
 };
 
 #endif // QTASKBARCONTROL_P_H
