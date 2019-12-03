@@ -5,14 +5,17 @@
 #include <QWidget>
 #include <QIcon>
 
-QTaskbarControl::QTaskbarControl(QWidget *parent) :
+QTaskbarControl::QTaskbarControl(QObject *parent) :
 	QObject{parent},
 	d{QTaskbarControlPrivate::createPrivate(this)}
+{}
+
+void QTaskbarControl::setWindow(QWidget *widget)
 {
-	Q_ASSERT_X(parent, Q_FUNC_INFO, "QTaskbarControl must have a valid parent");
-	parent->installEventFilter(this);
-	if(parent->windowHandle())
-		d->setWindow(parent->windowHandle());
+	if (widget->windowHandle())
+		d->setWindow(widget->windowHandle());
+	else
+		widget->installEventFilter(this);
 }
 
 QTaskbarControl::~QTaskbarControl() = default;
@@ -109,13 +112,13 @@ void QTaskbarControl::setCounter(int counter)
 
 bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)
 {
-	if(watched == parent()) {
-		if(event->type() == QEvent::Show) {
-			auto wid = qobject_cast<QWidget*>(parent());
-			if(wid)
-				d->setWindow(wid->windowHandle());
+	if (event->type() == QEvent::Show) {
+		auto widget = qobject_cast<QWidget*>(watched);
+		if (widget) {
+			d->setWindow(widget->windowHandle());
+			widget->removeEventFilter(this);
 		}
 	}
 
-	return false;
+	return QObject::eventFilter(watched, event);
 }

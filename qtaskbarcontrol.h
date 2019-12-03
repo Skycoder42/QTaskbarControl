@@ -4,7 +4,9 @@
 #include <QObject>
 #include <QScopedPointer>
 
+class QWindow;
 class QTaskbarControlPrivate;
+
 class Q_TASKBAR_CONTROL_EXPORT QTaskbarControl : public QObject
 {
 	Q_OBJECT
@@ -22,9 +24,10 @@ public:
 	};
 	Q_ENUM(WinProgressState)
 
-	explicit QTaskbarControl(QWidget *parent);
+	explicit QTaskbarControl(QObject *parent);
 	~QTaskbarControl() override;
 
+	void setWindow(QWidget *widget);
 	WinProgressState windowsProgressState() const;
 	QIcon windowsBadgeIcon() const;
 	QColor windowsBadgeTextColor() const;

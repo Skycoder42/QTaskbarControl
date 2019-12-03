@@ -42,7 +42,9 @@ Widget::Widget(QWidget *parent) :
 	ui->desktopFileLabel->setVisible(false);
 	ui->desktopFileLineEdit->setVisible(false);
 #endif
-#ifndef Q_OS_WIN
+#ifdef Q_OS_WIN
+	taskbar->setWindow(this);
+#else
 	ui->progressStateLabel->setVisible(false);
 	ui->progressStateComboBox->setVisible(false);
 	ui->badgeIconLabel->setVisible(false);
