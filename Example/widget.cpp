@@ -69,12 +69,12 @@ Widget::~Widget()
 
 void Widget::on_progressSlider_valueChanged(int value)
 {
-	taskbar->setProgress(value/(double)ui->progressSlider->maximum());
+	taskbar->setProgress(static_cast<double>(value) / ui->progressSlider->maximum());
 }
 
 void Widget::on_progressStateComboBox_currentIndexChanged(int index)
 {
-	taskbar->setWindowsProgressState((QTaskbarControl::WinProgressState)index);
+	taskbar->setWindowsProgressState(static_cast<QTaskbarControl::WinProgressState>(index));
 }
 
 void Widget::on_badgeIconPushButton_clicked()

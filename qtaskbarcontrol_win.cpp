@@ -79,7 +79,7 @@ void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
 		_button->progress()->setRange(0, 0);
 	else {
 		_button->progress()->setRange(0, 1000);
-		_button->progress()->setValue(progress * 1000);
+		_button->progress()->setValue(static_cast<int>(progress * 1000));
 	}
 	_button->progress()->setVisible(progressVisible);
 }
@@ -96,7 +96,7 @@ void QWinTaskbarControl::setCounter(bool counterVisible, int counter)
 
 			QPainter painter{&pm};
 			auto font = painter.font();
-			font.setPixelSize(pm.height() * 0.6);
+			font.setPixelSize(static_cast<int>(pm.height() * 0.6));
 			painter.setFont(font);
 			painter.setPen(_badgeColor);
 			painter.drawText(pm.rect(), Qt::AlignCenter, text);
