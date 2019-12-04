@@ -60,14 +60,14 @@ QGuiApplication::setDesktopFileName("myapp.desktop");
 And that's it. When you run the application it should work. I case it doesn't work: Try to set a different icon for the desktop file, e.g. `gtk-edit`. If you see that icon in the taskbar, your application gets correctly "connected" to that desktop file.
 
 #### Windows
-On Windows you need to set a valid window via `QTaskbarControl::setWindow` member function as in [QWinTaskbarButton](https://doc.qt.io/qt-5/qwintaskbarbutton.html):
+In order to work, the Windows implementation needs associated window. You can set it via `QTaskbarControl::setWidget` member function:
 
 ```cpp
 auto taskbar = new QTaskbarControl(parent);
-taskbar->setWindow(widget->windowHandle());
+taskbar->setWidget(widget);
 ```
 
-Please note that `QWidget::windowHandle()` returns a valid instance of a `QWindow` only after the widget has been shown. So you need to set it after the widget show event. For convenience you can use `QTaskbarControl::setWidget` function that will install event filter and will set a valid `QWindow` after widget show event automatically.
+Since widgets in Qt have a valid `QWindow` only after showing, this function will install event filter and will set a valid `QWindow` after widget show event automatically. You can also use `QTaskbarControl::setWindow` to set `QWindow` directly.
 
 ## Icon Reference
 - Windows: https://www.iconfinder.com/icons/10282/circle_red_icon#size=48
