@@ -27,6 +27,7 @@ public:
 	virtual void setCounter(bool counterVisible, int counter) = 0;
 
 private:
+	QPointer<QWidget> watchedWidget;
 	bool progressVisible;
 	double progress;
 	bool counterVisible;

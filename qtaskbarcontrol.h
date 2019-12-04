@@ -54,7 +54,6 @@ signals:
 
 private:
 	QScopedPointer<QTaskbarControlPrivate> d;
-	QPointer<QWidget> _watchedWidget;
 
 	bool eventFilter(QObject *watched, QEvent *event) override;
 };

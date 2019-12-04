@@ -17,13 +17,13 @@ void QTaskbarControl::setWidget(QWidget *widget)
 		return;
 	}
 
-	if (_watchedWidget)
-		_watchedWidget->removeEventFilter(this);
+	if (d->watchedWidget)
+		d->watchedWidget->removeEventFilter(this);
 
-	_watchedWidget = widget;
+	d->watchedWidget = widget;
 
-	if (_watchedWidget)
-		_watchedWidget->installEventFilter(this);
+	if (d->watchedWidget)
+		d->watchedWidget->installEventFilter(this);
 }
 
 void QTaskbarControl::setWindow(QWindow *window)
