@@ -43,7 +43,7 @@ Widget::Widget(QWidget *parent) :
 	ui->desktopFileLineEdit->setVisible(false);
 #endif
 #ifdef Q_OS_WIN
-	taskbar->setWindow(this);
+	taskbar->setWidget(this);
 #else
 	ui->progressStateLabel->setVisible(false);
 	ui->progressStateComboBox->setVisible(false);

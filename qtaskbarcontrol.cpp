@@ -10,12 +10,26 @@ QTaskbarControl::QTaskbarControl(QObject *parent) :
 	d{QTaskbarControlPrivate::createPrivate(this)}
 {}
 
-void QTaskbarControl::setWindow(QWidget *widget)
+void QTaskbarControl::setWidget(QWidget *widget)
 {
-	if (widget->windowHandle())
-		d->setWindow(widget->windowHandle());
-	else
-		widget->installEventFilter(this);
+	if (widget && widget->windowHandle()) {
+		setWindow(widget->windowHandle());
+		return;
+	}
+
+	if (_watchedWidget)
+		_watchedWidget->removeEventFilter(this);
+
+	_watchedWidget = widget;
+
+	if (_watchedWidget)
+		_watchedWidget->installEventFilter(this);
+}
+
+void QTaskbarControl::setWindow(QWindow *window)
+{
+	setWidget(nullptr);
+	d->setWindow(window);
 }
 
 QTaskbarControl::~QTaskbarControl() = default;
@@ -114,10 +128,8 @@ bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)
 {
 	if (event->type() == QEvent::Show) {
 		auto widget = qobject_cast<QWidget*>(watched);
-		if (widget) {
-			d->setWindow(widget->windowHandle());
-			widget->removeEventFilter(this);
-		}
+		if (widget)
+			setWindow(widget->windowHandle());
 	}
 
 	return QObject::eventFilter(watched, event);

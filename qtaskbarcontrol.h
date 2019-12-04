@@ -1,7 +1,7 @@
 #ifndef QTASKBARCONTROL_H
 #define QTASKBARCONTROL_H
 
-#include <QObject>
+#include <QPointer>
 #include <QScopedPointer>
 
 class QWindow;
@@ -27,7 +27,8 @@ public:
 	explicit QTaskbarControl(QObject *parent);
 	~QTaskbarControl() override;
 
-	void setWindow(QWidget *widget);
+	void setWidget(QWidget *widget);
+	void setWindow(QWindow *window);
 	WinProgressState windowsProgressState() const;
 	QIcon windowsBadgeIcon() const;
 	QColor windowsBadgeTextColor() const;
@@ -53,6 +54,7 @@ signals:
 
 private:
 	QScopedPointer<QTaskbarControlPrivate> d;
+	QPointer<QWidget> _watchedWidget;
 
 	bool eventFilter(QObject *watched, QEvent *event) override;
 };
