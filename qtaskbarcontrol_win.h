@@ -9,8 +9,7 @@
 class QWinTaskbarControl : public QTaskbarControlPrivate
 {
 public:
-	QWinTaskbarControl();
-	~QWinTaskbarControl() override;
+	QWinTaskbarControl(QTaskbarControl *q_ptr);
 
 	void setWindow(QWindow *window) override;
 	void setWindowsProgressState(QTaskbarControl::WinProgressState state) override;
@@ -23,6 +22,7 @@ public:
 	void setCounter(bool counterVisible, int counter) override;
 
 private:
+	QTaskbarControl *_q_ptr;
 	QWinTaskbarButton *_button;
 	QIcon _badgeIcon {QStringLiteral(":/de/skycoder42/qtaskbarcontrol/icons/badge.png")};
 	QColor _badgeColor = Qt::white;

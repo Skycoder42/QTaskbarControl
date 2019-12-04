@@ -3,19 +3,15 @@
 #include <QPainter>
 #include <QWinTaskbarProgress>
 
-QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate()
+QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *q_ptr)
 {
-	return new QWinTaskbarControl;
+	return new QWinTaskbarControl{q_ptr};
 }
 
-QWinTaskbarControl::QWinTaskbarControl() :
-	_button{new QWinTaskbarButton}
+QWinTaskbarControl::QWinTaskbarControl(QTaskbarControl *q_ptr) :
+	_q_ptr{q_ptr},
+	_button{new QWinTaskbarButton{q_ptr}}
 {}
-
-QWinTaskbarControl::~QWinTaskbarControl()
-{
-	delete _button;
-}
 
 void QWinTaskbarControl::setWindow(QWindow *window)
 {
@@ -53,7 +49,7 @@ void QWinTaskbarControl::setWindowsBadgeIcon(const QIcon &icon)
 {
 	if(!icon.isNull()) {
 		_badgeIcon = icon;
-		setCounter(_counterVisible, _counter);
+		setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
 	}
 }
 
@@ -65,7 +61,7 @@ QIcon QWinTaskbarControl::windowsBadgeIcon() const
 void QWinTaskbarControl::setWindowsBadgeTextColor(const QColor &color)
 {
 	_badgeColor = color;
-	setCounter(_counterVisible, _counter);
+	setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
 }
 
 QColor QWinTaskbarControl::windowsBadgeTextColor() const

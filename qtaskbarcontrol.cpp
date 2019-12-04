@@ -7,7 +7,7 @@
 
 QTaskbarControl::QTaskbarControl(QObject *parent) :
 	QObject{parent},
-	d{QTaskbarControlPrivate::createPrivate()}
+	d{QTaskbarControlPrivate::createPrivate(this)}
 {}
 
 void QTaskbarControl::setWindow(QWidget *widget)
@@ -37,22 +37,22 @@ QColor QTaskbarControl::windowsBadgeTextColor() const
 
 bool QTaskbarControl::progressVisible() const
 {
-	return d->_progressVisible;
+	return d->progressVisible;
 }
 
 double QTaskbarControl::progress() const
 {
-	return d->_progress;
+	return d->progress;
 }
 
 bool QTaskbarControl::counterVisible() const
 {
-	return d->_counterVisible;
+	return d->counterVisible;
 }
 
 int QTaskbarControl::counter() const
 {
-	return d->_counter;
+	return d->counter;
 }
 
 void QTaskbarControl::setWindowsProgressState(QTaskbarControl::WinProgressState state)
@@ -72,41 +72,41 @@ void QTaskbarControl::setWindowsBadgeTextColor(const QColor &color)
 
 void QTaskbarControl::setProgressVisible(bool progressVisible)
 {
-	if (d->_progressVisible == progressVisible)
+	if (d->progressVisible == progressVisible)
 		return;
 
-	d->_progressVisible = progressVisible;
-	d->setProgress(progressVisible, d->_progress);
+	d->progressVisible = progressVisible;
+	d->setProgress(progressVisible, d->progress);
 	emit progressVisibleChanged(progressVisible);
 }
 
 void QTaskbarControl::setProgress(double progress)
 {
-	if (qFuzzyCompare(d->_progress, progress))
+	if (qFuzzyCompare(d->progress, progress))
 		return;
 
-	d->_progress = progress;
-	d->setProgress(d->_progressVisible, progress);
+	d->progress = progress;
+	d->setProgress(d->progressVisible, progress);
 	emit progressChanged(progress);
 }
 
 void QTaskbarControl::setCounterVisible(bool counterVisible)
 {
-	if (d->_counterVisible == counterVisible)
+	if (d->counterVisible == counterVisible)
 		return;
 
-	d->_counterVisible = counterVisible;
-	d->setCounter(counterVisible, d->_counter);
+	d->counterVisible = counterVisible;
+	d->setCounter(counterVisible, d->counter);
 	emit counterVisibleChanged(counterVisible);
 }
 
 void QTaskbarControl::setCounter(int counter)
 {
-	if (d->_counter == counter)
+	if (d->counter == counter)
 		return;
 
-	d->_counter = counter;
-	d->setCounter(d->_counterVisible, counter);
+	d->counter = counter;
+	d->setCounter(d->counterVisible, counter);
 	emit counterChanged(counter);
 }
 

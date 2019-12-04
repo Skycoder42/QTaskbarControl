@@ -59,9 +59,9 @@
 
 @end
 
-QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate()
+QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 {
-        return new QMacTaskbarControl;
+	return new QMacTaskbarControl{};
 }
 
 QMacTaskbarControl::QMacTaskbarControl() :
