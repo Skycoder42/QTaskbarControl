@@ -2,27 +2,51 @@
 #include "qtaskbarcontrol_p.h"
 
 #include <QEvent>
+#include <QWidget>
+#include <QIcon>
 
-QTaskbarControl::QTaskbarControl(QWidget *parent) :
+QTaskbarControl::QTaskbarControl(QObject *parent) :
 	QObject{parent},
 	d{QTaskbarControlPrivate::createPrivate(this)}
+{}
+
+void QTaskbarControl::setWidget(QWidget *widget)
 {
-	Q_ASSERT_X(parent, Q_FUNC_INFO, "QTaskbarControl must have a valid parent");
-	parent->installEventFilter(this);
-	if(parent->windowHandle())
-		d->setWindow(parent->windowHandle());
+	if (widget && widget->windowHandle()) {
+		setWindow(widget->windowHandle());
+		return;
+	}
+
+	if (d->watchedWidget)
+		d->watchedWidget->removeEventFilter(this);
+
+	d->watchedWidget = widget;
+
+	if (d->watchedWidget)
+		d->watchedWidget->installEventFilter(this);
+}
+
+void QTaskbarControl::setWindow(QWindow *window)
+{
+	setWidget(nullptr);
+	d->setWindow(window);
 }
 
 QTaskbarControl::~QTaskbarControl() = default;
 
-bool QTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
+QTaskbarControl::WinProgressState QTaskbarControl::windowsProgressState() const
 {
-	return d->setAttribute(key, data);
+	return d->windowsProgressState();
 }
 
-QVariant QTaskbarControl::attribute(QTaskbarControl::SetupKey key) const
+QIcon QTaskbarControl::windowsBadgeIcon() const
 {
-	return d->attribute(key);
+	return d->windowsBadgeIcon();
+}
+
+QColor QTaskbarControl::windowsBadgeTextColor() const
+{
+	return d->windowsBadgeTextColor();
 }
 
 bool QTaskbarControl::progressVisible() const
@@ -43,6 +67,21 @@ bool QTaskbarControl::counterVisible() const
 int QTaskbarControl::counter() const
 {
 	return d->counter;
+}
+
+void QTaskbarControl::setWindowsProgressState(QTaskbarControl::WinProgressState state)
+{
+	d->setWindowsProgressState(state);
+}
+
+void QTaskbarControl::setWindowsBadgeIcon(const QIcon &icon)
+{
+	d->setWindowsBadgeIcon(icon);
+}
+
+void QTaskbarControl::setWindowsBadgeTextColor(const QColor &color)
+{
+	d->setWindowsBadgeTextColor(color);
 }
 
 void QTaskbarControl::setProgressVisible(bool progressVisible)
@@ -87,13 +126,11 @@ void QTaskbarControl::setCounter(int counter)
 
 bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)
 {
-	if(watched == parent()) {
-		if(event->type() == QEvent::Show) {
-			auto wid = qobject_cast<QWidget*>(parent());
-			if(wid)
-				d->setWindow(wid->windowHandle());
-		}
+	if (event->type() == QEvent::Show) {
+		auto widget = qobject_cast<QWidget*>(watched);
+		if (widget)
+			setWindow(widget->windowHandle());
 	}
 
-	return false;
+	return QObject::eventFilter(watched, event);
 }

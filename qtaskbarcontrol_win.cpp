@@ -21,60 +21,52 @@ void QWinTaskbarControl::setWindow(QWindow *window)
 	_button->setWindow(window);
 }
 
-bool QWinTaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
+void QWinTaskbarControl::setWindowsProgressState(QTaskbarControl::WinProgressState state)
 {
-	switch (key) {
-	case QTaskbarControl::WindowsProgressState:
-		_button->progress()->resume();
-		switch (data.toInt()) {
-		case QTaskbarControl::Running:
-			return true;
-		case QTaskbarControl::Paused:
-			_button->progress()->pause();
-			return true;
-		case QTaskbarControl::Stopped:
-			_button->progress()->stop();
-			return true;
-		default:
-			return false;
-		}
-	case QTaskbarControl::WindowsBadgeIcon:
-	{
-		auto icon = data.value<QIcon>();
-		if(!icon.isNull()) {
-			_badgeIcon = icon;
-			setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
-			return true;
-		} else
-			return false;
-	}
-	case QTaskbarControl::WindowsBadgeTextColor:
-		_badgeColor = data.value<QColor>();
-		setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
-		return true;
-	default:
-		return false;
+	_button->progress()->resume();
+	switch (state) {
+	case QTaskbarControl::Running:
+	case QTaskbarControl::Paused:
+		_button->progress()->pause();
+		break;
+	case QTaskbarControl::Stopped:
+		_button->progress()->stop();
 	}
 }
 
-QVariant QWinTaskbarControl::attribute(QTaskbarControl::SetupKey key)
+QTaskbarControl::WinProgressState QWinTaskbarControl::windowsProgressState() const
 {
-	switch (key) {
-	case QTaskbarControl::WindowsProgressState:
-		if(_button->progress()->isStopped())
-			return QTaskbarControl::Stopped;
-		else if (_button->progress()->isPaused())
-			return QTaskbarControl::Paused;
-		else
-			return QTaskbarControl::Running;
+	if(_button->progress()->isStopped())
+		return QTaskbarControl::Stopped;
 
-	case QTaskbarControl::WindowsBadgeIcon:
-		return QVariant::fromValue(_badgeIcon);
-	case QTaskbarControl::WindowsBadgeTextColor:
-		return _badgeColor;
-	default:
-		return QVariant();
+	if (_button->progress()->isPaused())
+		return QTaskbarControl::Paused;
+
+	return QTaskbarControl::Running;
+}
+
+void QWinTaskbarControl::setWindowsBadgeIcon(const QIcon &icon)
+{
+	if(!icon.isNull()) {
+		_badgeIcon = icon;
+		setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
 	}
+}
+
+QIcon QWinTaskbarControl::windowsBadgeIcon() const
+{
+	return _badgeIcon;
+}
+
+void QWinTaskbarControl::setWindowsBadgeTextColor(const QColor &color)
+{
+	_badgeColor = color;
+	setCounter(_q_ptr->counterVisible(), _q_ptr->counter());
+}
+
+QColor QWinTaskbarControl::windowsBadgeTextColor() const
+{
+	return _badgeColor;
 }
 
 void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
@@ -83,7 +75,7 @@ void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
 		_button->progress()->setRange(0, 0);
 	else {
 		_button->progress()->setRange(0, 1000);
-		_button->progress()->setValue(progress * 1000);
+		_button->progress()->setValue(static_cast<int>(progress * 1000));
 	}
 	_button->progress()->setVisible(progressVisible);
 }
@@ -100,7 +92,7 @@ void QWinTaskbarControl::setCounter(bool counterVisible, int counter)
 
 			QPainter painter{&pm};
 			auto font = painter.font();
-			font.setPixelSize(pm.height() * 0.6);
+			font.setPixelSize(static_cast<int>(pm.height() * 0.6));
 			painter.setFont(font);
 			painter.setPen(_badgeColor);
 			painter.drawText(pm.rect(), Qt::AlignCenter, text);

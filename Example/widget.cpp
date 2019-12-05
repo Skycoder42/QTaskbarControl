@@ -25,6 +25,7 @@ Widget::Widget(QWidget *parent) :
 
 #ifdef Q_OS_LINUX
 	auto name = QUuid::createUuid().toString() + QStringLiteral(".desktop");
+	QGuiApplication::setDesktopFileName(name);
 	QDir appDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
 	QFile desktopFile(appDir.absoluteFilePath(name));
 	if(!desktopFile.exists()) {
@@ -36,13 +37,14 @@ Widget::Widget(QWidget *parent) :
 		desktopFile.write("Exec=" + QApplication::applicationFilePath().toUtf8() + "\n");
 		desktopFile.close();
 	}
-	taskbar->setAttribute(QTaskbarControl::LinuxDesktopFile, name);
 	ui->desktopFileLineEdit->setText(name);
 #else
 	ui->desktopFileLabel->setVisible(false);
 	ui->desktopFileLineEdit->setVisible(false);
 #endif
-#ifndef Q_OS_WIN
+#ifdef Q_OS_WIN
+	taskbar->setWidget(this);
+#else
 	ui->progressStateLabel->setVisible(false);
 	ui->progressStateComboBox->setVisible(false);
 	ui->badgeIconLabel->setVisible(false);
@@ -57,7 +59,7 @@ Widget::Widget(QWidget *parent) :
 Widget::~Widget()
 {
 #ifdef Q_OS_LINUX
-	auto name = taskbar->attribute(QTaskbarControl::LinuxDesktopFile).toString();
+	auto name = QGuiApplication::desktopFileName();
 	QDir appDir = QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation);
 	QFile::remove(appDir.absoluteFilePath(name));
 #endif
@@ -67,12 +69,12 @@ Widget::~Widget()
 
 void Widget::on_progressSlider_valueChanged(int value)
 {
-	taskbar->setProgress(value/(double)ui->progressSlider->maximum());
+	taskbar->setProgress(static_cast<double>(value) / ui->progressSlider->maximum());
 }
 
 void Widget::on_progressStateComboBox_currentIndexChanged(int index)
 {
-	taskbar->setAttribute(QTaskbarControl::WindowsProgressState, (QTaskbarControl::WinProgressState)index);
+	taskbar->setWindowsProgressState(static_cast<QTaskbarControl::WinProgressState>(index));
 }
 
 void Widget::on_badgeIconPushButton_clicked()
@@ -82,16 +84,16 @@ void Widget::on_badgeIconPushButton_clicked()
 											 QString(),
 											 tr("Icons (*.ico *.png *.bmp);;All Files (*)"));
 	if(!file.isNull())
-		taskbar->setAttribute(QTaskbarControl::WindowsBadgeIcon, QIcon(file));
+		taskbar->setWindowsBadgeIcon(QIcon(file));
 }
 
 void Widget::on_badgeTextColorPushButton_clicked()
 {
-	auto color = QColorDialog::getColor(taskbar->attribute(QTaskbarControl::WindowsBadgeTextColor).value<QColor>(),
+	auto color = QColorDialog::getColor(taskbar->windowsBadgeTextColor(),
 										this,
 										tr("Select a color"));
 	if(color.isValid())
-		taskbar->setAttribute(QTaskbarControl::WindowsBadgeTextColor, color);
+		taskbar->setWindowsBadgeTextColor(color);
 }
 
 void Widget::on_indeterminatePushButton_clicked()

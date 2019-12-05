@@ -2,39 +2,11 @@
 #include <QDBusMessage>
 #include <QDBusConnection>
 #include <QDebug>
+#include <QGuiApplication>
 
 QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 {
 	return new QX11TaskbarControl{};
-}
-
-void QX11TaskbarControl::setWindow(QWindow *window)
-{
-	Q_UNUSED(window);
-}
-
-bool QX11TaskbarControl::setAttribute(QTaskbarControl::SetupKey key, const QVariant &data)
-{
-	switch (key) {
-	case QTaskbarControl::LinuxDesktopFile:
-		if(!_desktopFile.isEmpty())
-			sendReset();
-		_desktopFile = data.toString();
-		sendReset();
-		return true;
-	default:
-		return false;
-	}
-}
-
-QVariant QX11TaskbarControl::attribute(QTaskbarControl::SetupKey key)
-{
-	switch (key) {
-	case QTaskbarControl::LinuxDesktopFile:
-		return _desktopFile;
-	default:
-		return QVariant();
-	}
 }
 
 void QX11TaskbarControl::setProgress(bool progressVisible, double progress)
@@ -55,8 +27,8 @@ void QX11TaskbarControl::setCounter(bool counterVisible, int counter)
 
 void QX11TaskbarControl::sendMessage(const QVariantMap &params)
 {
-	if(_desktopFile.isEmpty()) {
-		qWarning() << "You need to set the" << QTaskbarControl::LinuxDesktopFile << "attribute before you can use QTaskbarControl!";
+	if(QGuiApplication::desktopFileName().isEmpty()) {
+		qWarning() << "You need to set the desktop file name before you can use QTaskbarControl!";
 		return;
 	}
 
@@ -64,17 +36,7 @@ void QX11TaskbarControl::sendMessage(const QVariantMap &params)
 											  QStringLiteral("com.canonical.Unity.LauncherEntry"),
 											  QStringLiteral("Update"));
 
-	message << QString{QStringLiteral("application://") + _desktopFile}
+	message << QStringLiteral("application://") + QGuiApplication::desktopFileName()
 			<< params;
 	QDBusConnection::sessionBus().send(message);
-}
-
-void QX11TaskbarControl::sendReset()
-{
-	QVariantMap properties;
-	properties.insert(QStringLiteral("progress-visible"), false);
-	properties.insert(QStringLiteral("progress"), 0.0);
-	properties.insert(QStringLiteral("count-visible"), false);
-	properties.insert(QStringLiteral("count"), 0);
-	sendMessage(properties);
 }

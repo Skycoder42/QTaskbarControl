@@ -3,7 +3,8 @@ HEADERS += \
 	$$PWD/qtaskbarcontrol_p.h
 
 SOURCES += \
-	$$PWD/qtaskbarcontrol.cpp
+        $$PWD/qtaskbarcontrol.cpp \
+        $$PWD/qtaskbarcontrol_p.cpp
 
 linux:!android:!emscripten {
 	QT += dbus
