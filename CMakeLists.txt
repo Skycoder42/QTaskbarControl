@@ -8,6 +8,7 @@ add_library(${PROJECT_NAME}
     qtaskbarcontrol.cpp
     qtaskbarcontrol_p.cpp
 )
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
