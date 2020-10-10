@@ -7,8 +7,8 @@ class QDummyTaskbarControl : public QTaskbarControlPrivate
 {
 public:
 	// QTaskbarControlPrivate interface
-	void setProgress(bool progressVisible, double progress) override;
-	void setCounter(bool counterVisible, int counter) override;
+	void setProgress(bool visible, double progress) override;
+	void setCounter(bool visible, int value) override;
 };
 
 #endif // QTASKBARCONTROL_DUMMY_H
