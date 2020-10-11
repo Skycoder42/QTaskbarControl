@@ -41,16 +41,16 @@ public slots:
 	void setWindowsProgressState(WinProgressState state);
 	void setWindowsBadgeIcon(const QIcon &icon);
 	void setWindowsBadgeTextColor(const QColor &color);
-	void setProgressVisible(bool progressVisible);
+	void setProgressVisible(bool visible);
 	void setProgress(double progress);
-	void setCounterVisible(bool counterVisible);
-	void setCounter(int counter);
+	void setCounterVisible(bool visible);
+	void setCounter(int value);
 
 signals:
-	void progressVisibleChanged(bool progressVisible);
+	void progressVisibleChanged(bool visible);
 	void progressChanged(double progress);
-	void counterVisibleChanged(bool counterVisible);
-	void counterChanged(int counter);
+	void counterVisibleChanged(bool visible);
+	void counterChanged(int value);
 
 private:
 	QScopedPointer<QTaskbarControlPrivate> d;

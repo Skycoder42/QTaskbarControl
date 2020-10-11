@@ -69,7 +69,7 @@ QColor QWinTaskbarControl::windowsBadgeTextColor() const
 	return _badgeColor;
 }
 
-void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
+void QWinTaskbarControl::setProgress(bool visible, double progress)
 {
 	if(progress < 0)
 		_button->progress()->setRange(0, 0);
@@ -77,14 +77,14 @@ void QWinTaskbarControl::setProgress(bool progressVisible, double progress)
 		_button->progress()->setRange(0, 1000);
 		_button->progress()->setValue(static_cast<int>(progress * 1000));
 	}
-	_button->progress()->setVisible(progressVisible);
+	_button->progress()->setVisible(visible);
 }
 
-void QWinTaskbarControl::setCounter(bool counterVisible, int counter)
+void QWinTaskbarControl::setCounter(bool visible, int visible)
 {
-	if(counterVisible) {
+	if(visible) {
 		QIcon currentBadge;
-		auto text = QLocale{}.toString(counter);
+		auto text = QLocale{}.toString(visible);
 
 		foreach(auto size, _badgeIcon.availableSizes()) {
 			auto pm = _badgeIcon.pixmap(size);

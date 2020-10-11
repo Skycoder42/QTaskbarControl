@@ -9,19 +9,19 @@ QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 	return new QX11TaskbarControl{};
 }
 
-void QX11TaskbarControl::setProgress(bool progressVisible, double progress)
+void QX11TaskbarControl::setProgress(bool visible, double progress)
 {
 	QVariantMap properties;
-	properties.insert(QStringLiteral("progress-visible"), progressVisible);
+	properties.insert(QStringLiteral("progress-visible"), visible);
 	properties.insert(QStringLiteral("progress"), progress);
 	sendMessage(properties);
 }
 
-void QX11TaskbarControl::setCounter(bool counterVisible, int counter)
+void QX11TaskbarControl::setCounter(bool visible, int value)
 {
 	QVariantMap properties;
-	properties.insert(QStringLiteral("count-visible"), counterVisible);
-	properties.insert(QStringLiteral("count"), counter);
+	properties.insert(QStringLiteral("count-visible"), visible);
+	properties.insert(QStringLiteral("count"), value);
 	sendMessage(properties);
 }
 

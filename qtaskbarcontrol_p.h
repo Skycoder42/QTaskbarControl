@@ -23,8 +23,8 @@ public:
 	virtual QIcon windowsBadgeIcon() const;
 	virtual void setWindowsBadgeTextColor(const QColor &color);
 	virtual QColor windowsBadgeTextColor() const;
-	virtual void setProgress(bool progressVisible, double progress) = 0;
-	virtual void setCounter(bool counterVisible, int counter) = 0;
+	virtual void setProgress(bool visible, double progress) = 0;
+	virtual void setCounter(bool visible, int value) = 0;
 
 private:
 	QPointer<QWidget> watchedWidget;

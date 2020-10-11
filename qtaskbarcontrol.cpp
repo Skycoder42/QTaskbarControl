@@ -84,14 +84,14 @@ void QTaskbarControl::setWindowsBadgeTextColor(const QColor &color)
 	d->setWindowsBadgeTextColor(color);
 }
 
-void QTaskbarControl::setProgressVisible(bool progressVisible)
+void QTaskbarControl::setProgressVisible(bool visible)
 {
-	if (d->progressVisible == progressVisible)
+	if (d->progressVisible == visible)
 		return;
 
-	d->progressVisible = progressVisible;
-	d->setProgress(progressVisible, d->progress);
-	emit progressVisibleChanged(progressVisible);
+	d->progressVisible = visible;
+	d->setProgress(visible, d->progress);
+	emit progressVisibleChanged(visible);
 }
 
 void QTaskbarControl::setProgress(double progress)
@@ -104,24 +104,24 @@ void QTaskbarControl::setProgress(double progress)
 	emit progressChanged(progress);
 }
 
-void QTaskbarControl::setCounterVisible(bool counterVisible)
+void QTaskbarControl::setCounterVisible(bool visible)
 {
-	if (d->counterVisible == counterVisible)
+	if (d->counterVisible == visible)
 		return;
 
-	d->counterVisible = counterVisible;
-	d->setCounter(counterVisible, d->counter);
-	emit counterVisibleChanged(counterVisible);
+	d->counterVisible = visible;
+	d->setCounter(visible, d->counter);
+	emit counterVisibleChanged(visible);
 }
 
-void QTaskbarControl::setCounter(int counter)
+void QTaskbarControl::setCounter(int value)
 {
-	if (d->counter == counter)
+	if (d->counter == value)
 		return;
 
-	d->counter = counter;
-	d->setCounter(d->counterVisible, counter);
-	emit counterChanged(counter);
+	d->counter = value;
+	d->setCounter(d->counterVisible, value);
+	emit counterChanged(value);
 }
 
 bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)

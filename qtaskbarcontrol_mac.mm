@@ -73,20 +73,20 @@ QMacTaskbarControl::~QMacTaskbarControl()
 	[_taskView release];
 }
 
-void QMacTaskbarControl::setProgress(bool progressVisible, double progress)
+void QMacTaskbarControl::setProgress(bool visible, double progress)
 {
 	[_taskView setProgress:progress];
-	if (progressVisible && progress >= 0.0)
+	if (visible && progress >= 0.0)
 		[[NSApp dockTile] setContentView:_taskView];
 	else
 		[[NSApp dockTile] setContentView:nil];
 	[[NSApp dockTile] display];
 }
 
-void QMacTaskbarControl::setCounter(bool counterVisible, int counter)
+void QMacTaskbarControl::setCounter(bool visible, int value)
 {
-	if(counterVisible)
-		QtMac::setBadgeLabelText(QLocale().toString(counter));
+	if(visible)
+		QtMac::setBadgeLabelText(QLocale().toString(value));
 	else
 		QtMac::setBadgeLabelText(QString());
 }
