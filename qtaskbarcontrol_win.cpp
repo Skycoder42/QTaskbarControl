@@ -80,11 +80,11 @@ void QWinTaskbarControl::setProgress(bool visible, double progress)
 	_button->progress()->setVisible(visible);
 }
 
-void QWinTaskbarControl::setCounter(bool visible, int visible)
+void QWinTaskbarControl::setCounter(bool visible, int value)
 {
 	if(visible) {
 		QIcon currentBadge;
-		auto text = QLocale{}.toString(visible);
+		auto text = QLocale{}.toString(value);
 
 		foreach(auto size, _badgeIcon.availableSizes()) {
 			auto pm = _badgeIcon.pixmap(size);
