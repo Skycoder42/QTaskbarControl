@@ -69,13 +69,13 @@ QColor QWinTaskbarControl::windowsBadgeTextColor() const
 	return _badgeColor;
 }
 
-void QWinTaskbarControl::setProgress(bool visible, double progress)
+void QWinTaskbarControl::setProgress(bool visible, double value)
 {
-	if(progress < 0)
+	if(value < 0)
 		_button->progress()->setRange(0, 0);
 	else {
 		_button->progress()->setRange(0, 1000);
-		_button->progress()->setValue(static_cast<int>(progress * 1000));
+		_button->progress()->setValue(static_cast<int>(value * 1000));
 	}
 	_button->progress()->setVisible(visible);
 }

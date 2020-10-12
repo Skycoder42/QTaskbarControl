@@ -42,13 +42,13 @@ public slots:
 	void setWindowsBadgeIcon(const QIcon &icon);
 	void setWindowsBadgeTextColor(const QColor &color);
 	void setProgressVisible(bool visible);
-	void setProgress(double progress);
+	void setProgress(double value);
 	void setCounterVisible(bool visible);
 	void setCounter(int value);
 
 signals:
 	void progressVisibleChanged(bool visible);
-	void progressChanged(double progress);
+	void progressChanged(double value);
 	void counterVisibleChanged(bool visible);
 	void counterChanged(int value);
 

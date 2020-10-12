@@ -18,7 +18,7 @@ public:
 	QIcon windowsBadgeIcon() const override;
 	void setWindowsBadgeTextColor(const QColor &color) override;
 	QColor windowsBadgeTextColor() const override;
-	void setProgress(bool visible, double progress) override;
+	void setProgress(bool visible, double value) override;
 	void setCounter(bool visible, int value) override;
 
 private:

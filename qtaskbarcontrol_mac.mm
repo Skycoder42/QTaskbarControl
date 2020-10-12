@@ -11,9 +11,9 @@
 
 @implementation TaskProgressView
 
-- (void)setProgress:(double)progress
+- (void)setProgress:(double)value
 {
-	_progress = progress;
+	_progress = value;
 }
 
 - (void)drawRect:(NSRect)rect
@@ -73,10 +73,10 @@ QMacTaskbarControl::~QMacTaskbarControl()
 	[_taskView release];
 }
 
-void QMacTaskbarControl::setProgress(bool visible, double progress)
+void QMacTaskbarControl::setProgress(bool visible, double value)
 {
-	[_taskView setProgress:progress];
-	if (visible && progress >= 0.0)
+	[_taskView setProgress:value];
+	if (visible && value >= 0.0)
 		[[NSApp dockTile] setContentView:_taskView];
 	else
 		[[NSApp dockTile] setContentView:nil];

@@ -5,10 +5,10 @@ QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 	return new QDummyTaskbarControl{};
 }
 
-void QDummyTaskbarControl::setProgress(bool visible, double progress)
+void QDummyTaskbarControl::setProgress(bool visible, double value)
 {
 	Q_UNUSED(visible)
-	Q_UNUSED(progress)
+	Q_UNUSED(value)
 }
 
 void QDummyTaskbarControl::setCounter(bool visible, int value)

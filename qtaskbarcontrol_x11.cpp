@@ -9,11 +9,11 @@ QTaskbarControlPrivate *QTaskbarControlPrivate::createPrivate(QTaskbarControl *)
 	return new QX11TaskbarControl{};
 }
 
-void QX11TaskbarControl::setProgress(bool visible, double progress)
+void QX11TaskbarControl::setProgress(bool visible, double value)
 {
 	QVariantMap properties;
 	properties.insert(QStringLiteral("progress-visible"), visible);
-	properties.insert(QStringLiteral("progress"), progress);
+	properties.insert(QStringLiteral("progress"), value);
 	sendMessage(properties);
 }
 

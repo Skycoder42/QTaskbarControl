@@ -9,7 +9,7 @@
 	double _progress;
 }
 
-- (void)setProgress:(double)progress;
+- (void)setProgress:(double)value;
 
 @end
 
@@ -19,7 +19,7 @@ public:
 	QMacTaskbarControl();
 	~QMacTaskbarControl();
 
-	void setProgress(bool visible, double progress) override;
+	void setProgress(bool visible, double value) override;
 	void setCounter(bool visible, int value) override;
 
 private:
