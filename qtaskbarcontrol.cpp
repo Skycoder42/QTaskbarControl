@@ -127,7 +127,7 @@ void QTaskbarControl::setCounter(int value)
 bool QTaskbarControl::eventFilter(QObject *watched, QEvent *event)
 {
 	if (event->type() == QEvent::Show) {
-		auto widget = qobject_cast<QWidget*>(watched);
+		auto *widget = qobject_cast<QWidget*>(watched);
 		if (widget)
 			setWindow(widget->windowHandle());
 	}

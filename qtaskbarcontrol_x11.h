@@ -11,7 +11,7 @@ public:
 	void setCounter(bool visible, int value) override;
 
 private:
-	void sendMessage(const QVariantMap &params);
+	static void sendMessage(const QVariantMap &params);
 };
 
 #endif // QTASKBARCONTROL_X11_H
