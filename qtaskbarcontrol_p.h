@@ -23,7 +23,7 @@ public:
 	virtual QIcon windowsBadgeIcon() const;
 	virtual void setWindowsBadgeTextColor(const QColor &color);
 	virtual QColor windowsBadgeTextColor() const;
-	virtual void setProgress(bool visible, double progress) = 0;
+	virtual void setProgress(bool visible, double value) = 0;
 	virtual void setCounter(bool visible, int value) = 0;
 
 private:

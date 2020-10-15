@@ -94,14 +94,14 @@ void QTaskbarControl::setProgressVisible(bool visible)
 	emit progressVisibleChanged(visible);
 }
 
-void QTaskbarControl::setProgress(double progress)
+void QTaskbarControl::setProgress(double value)
 {
-	if (qFuzzyCompare(d->progress, progress))
+	if (qFuzzyCompare(d->progress, value))
 		return;
 
-	d->progress = progress;
-	d->setProgress(d->progressVisible, progress);
-	emit progressChanged(progress);
+	d->progress = value;
+	d->setProgress(d->progressVisible, value);
+	emit progressChanged(value);
 }
 
 void QTaskbarControl::setCounterVisible(bool visible)
