@@ -38,7 +38,7 @@ public:
 	int counter() const;
 
 public slots:
-	void setWindowsProgressState(WinProgressState state);
+	void setWindowsProgressState(QTaskbarControl::WinProgressState state);
 	void setWindowsBadgeIcon(const QIcon &icon);
 	void setWindowsBadgeTextColor(const QColor &color);
 	void setProgressVisible(bool visible);
